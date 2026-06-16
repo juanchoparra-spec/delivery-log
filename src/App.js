@@ -119,6 +119,13 @@ export default function DeliveryTracker() {
     setRecords(updated); saveRecords(updated); showToast("Eliminado.","err");
   }
 
+  function handleReset() {
+    if (window.confirm("⚠️ ¿Estás seguro? Esto borrará TODOS los registros y no se puede deshacer.")) {
+      setRecords([]); saveRecords([]); resetForm(); setVista("registro");
+      showToast("Datos reseteados. Nueva semana lista ✓");
+    }
+  }
+
   const weekDates = getWeekDates(semanaRef);
   const weekRecs = records.filter(r => weekDates.includes(r.fecha));
   const wClientes = weekRecs.reduce((a,r)=>a+r.clientes,0);
@@ -153,6 +160,12 @@ export default function DeliveryTracker() {
               {todayRecord ? `${todayRecord.clientes} clientes hoy` : "Sin registro hoy"}
             </div>
           </div>
+          <button onClick={handleReset}
+            style={{background:"#EF4444", border:"none", borderRadius:8, color:"#fff",
+              fontWeight:700, fontSize:11, padding:"6px 10px", cursor:"pointer",
+              boxShadow:"0 2px 6px rgba(0,0,0,.3)", marginLeft:4}}>
+            🔄 Reset
+          </button>
         </div>
         <div style={{display:"flex", marginTop:16}}>
           {[["registro","📝 Registrar"],["historial","📋 Historial"],["resumen","📊 Resumen"]].map(([k,label])=>(
